@@ -8,7 +8,7 @@ function Board({ result, setResult }) {
   const [player, setPlayer] = useState("X");
   const [turn, setTurn] = useState("X");
   const { channel } = useChannelStateContext();
-  const { seChatContext();
+  const { client } = useChatContext();
 
   useEffect(() => {
     checkIfTie();
@@ -34,7 +34,7 @@ function Board({ result, setResult }) {
   };
 
   channel.on("game-move", (e) => {
-    if (e.type === "game-move" && e.user.id !== D) {
+    if (e.type === "game-move" && e.user.id !== client.userID) {
       const currentPlayer = e.data.player === "X" ? "O" : "X";
 
       setPlayer(currentPlayer);

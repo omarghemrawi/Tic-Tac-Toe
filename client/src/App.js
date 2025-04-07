@@ -11,7 +11,7 @@ function App() {
   const API_KEY = process.env.API_KEY;
   const cookies = new Cookies();
   const token = cookies.get("token");
-  const  = StreamChat.getInstance(API_KEY);
+  const chatClient = StreamChat.getInstance(API_KEY);
   const [isAuth, setIsAuth] = useState(false);
 
   const logout = async () => {
@@ -21,14 +21,15 @@ function App() {
     cookies.remove("userId");
     cookies.remove("token");
     cookies.remove("hashPassword");
+    // cookies.remove("jwt");
     cookies.remove("channelName"); // ********************************
-    await .disconnectUser();
+    await chatClient.disconnectUser();
 
     setIsAuth(false);
   };
 
   if (token) {
-    
+    chatClient
       .connectUser(
         {
           // we can use just id at least
@@ -40,7 +41,7 @@ function App() {
         },
         token
       )
-      .then((user) => {
+      .then(() => {
         setIsAuth(true);
       });
   }
@@ -48,7 +49,7 @@ function App() {
   return (
     <div className="App">
       {isAuth ? (
-        <Chat ={}>
+        <Chat client={chatClient} theme="messaging light">
           <JoinGame />
           <button className="btn-out" onClick={logout}>
             Log Out
